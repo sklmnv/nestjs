@@ -3,40 +3,36 @@ import { title } from 'process';
 import { TaskStatus } from './task-status.enum';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.tdo';
-import { GetTasksFilterDro } from './dto/get-tasks-filter.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/upda-task-status.dto';
+import { Task } from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
     constructor(private tasksService: TasksService) { }
 
-    // @Get()
-    // getTasks(@Query() getTasksFilterDro: GetTasksFilterDro): Task[] {
-    //     if (Object.keys(getTasksFilterDro).length) {
-    //         return this.tasksService.getTasksWithFilter(getTasksFilterDro);
-    //     }
-    //     else {
-    //         return this.tasksService.getTasks();
-    //     }
-    // }
+    @Get()
+    getTasks(@Query() getTasksFilterDro: GetTasksFilterDto): Promise<Task[]> {
+        return this.tasksService.getTasks(getTasksFilterDro);
+    }
 
-    // @Post()
-    // createTask(@Body() createTaskDto: CreateTaskDto): Task {
-    //     return this.tasksService.createTask(createTaskDto);
-    // } s
+    @Post()
+    createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task>{
+        return this.tasksService.createTask(createTaskDto);
+    }
 
-    // @Get('/:taskId')
-    // getTask(@Param('taskId') taskId: string) {
-    //     return this.tasksService.getTask(taskId);
-    // }
+    @Get('/:taskId')
+    getTask(@Param('taskId') taskId: string): Promise<Task> {
+        return this.tasksService.getTask(taskId);
+    }
 
-    // @Delete('/:taskId')
-    // deleteTask(@Param('taskId') taskId: string) {
-    //     this.tasksService.deleteTask(taskId);
-    // }
+    @Delete('/:taskId')
+    deleteTask(@Param('taskId') taskid: string): Promise<void>{
+        return this.tasksService.deleteTask(taskid);
+    }
 
-    // @Patch('/:taskId/status')
-    // updateTaskStatus(@Param('taskId') taskId: string, @Body() updateTaskStatus: UpdateTaskStatusDto) {
-    //     return this.tasksService.updateTaskStatus(taskId, updateTaskStatus);
-    // }
+    @Patch('/:taskId/status')
+    updateTaskStatus(@Param('taskId') taskId: string, @Body() updateTaskStatus: UpdateTaskStatusDto): Promise<Task>{
+        return this.tasksService.updateTaskStatus(taskId, updateTaskStatus);
+    }
 }
